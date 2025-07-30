@@ -1,0 +1,112 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>API Documentation</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container py-5">
+        <h2 class="mb-4 text-center">📘 API Documentation</h2>
+        <div class="row g-4">
+
+            <!-- 🔐 Register -->
+            <div class="col-lg-4">
+                <div class="card ">
+                    <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">🔐 Register</h5>
+                        <p><strong>POST</strong> /register/</p>
+                        <p>Send JSON body:</p>
+                        <pre>{
+  "username": "your_username",
+  "password": "your_password"
+}</pre>
+
+                        <p class="mt-2">
+                            To access <strong>Subscribe</strong>, <strong>View Subscription</strong>, or <strong>Cancel
+                                Subscription</strong>,
+                            you must first <strong>register</strong> and then <a href="/login/">login</a>.
+                        </p>
+
+                        <a href="/api/register/" class="btn btn-primary mt-auto">Go</a>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">Availabe Plans</h5>
+                        <p><strong>GET</strong> /api/availabe-plans/</p>
+                        <p>Returns exchange rate between two currencies.</p>
+                        <a href="/api/availabe-plans/" class="btn btn-primary w-100 mt-3">Go</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 💱 Get Exchange Rate -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">💱 Get Exchange Rate</h5>
+                        <p><strong>GET</strong> /api/exchange-rate/?base=USD&target=BDT</p>
+                        <p>Returns all availabe plans in json formate</p>
+                        <a href="/api/exchange-rate/?base=USD&target=BDT" class="btn btn-primary w-100 mt-3">Go</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📥 Subscribe -->
+            <div class="col-lg-4">
+                <div class="card ">
+                    <div class="card-body">
+                        <h5 class="card-title">📥 Subscribe</h5>
+                        <p><strong>POST</strong> /api/subscribe/ (Requires Auth)</p>
+                        <p>Send JSON body:</p>
+                        <pre>{
+  "plan_id": 1
+}</pre>
+                        <a href="/api/subscribe/" class="btn btn-primary w-100 mt-3">Go</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 📦 View Subscriptions -->
+            <div class="col-lg-4">
+                <div class="card ">
+                    <div class="card-body">
+                        <h5 class="card-title">📦 View Subscriptions</h5>
+                        <p><strong>GET</strong> /subscriptions/ (Requires Auth)</p>
+                        <p>Returns your active subscriptions.</p>
+                        <a href="/api/subscriptions/" class="btn btn-primary w-100 mt-3">Go</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ❌ Cancel Subscription -->
+            <div class="col-lg-4">
+                <div class="card ">
+                    <div class="card-body">
+                        <h5 class="card-title">❌ Cancel Subscription</h5>
+                        <p><strong>POST</strong> /cancel-subscription/ (Requires Auth)</p>
+                        <p>Send JSON body:</p>
+                        <pre>{
+  "subscription_id": 2
+}</pre>
+                        <a href="/api/cancel-subscription/" class="btn btn-primary w-100 mt-3">Go</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/6.4.2/mdb.min.js"></script>
+</body>
+
+</html>

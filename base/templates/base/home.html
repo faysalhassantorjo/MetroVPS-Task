@@ -18,65 +18,90 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
-        <ul class="navbar-nav">
-          <!-- Profile Dropdown -->
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-mdb-toggle="dropdown">
-              Profile
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
-              <li><a class="dropdown-item" href="#">View Profile</a></li>
-              <li><a class="dropdown-item" href="#">Settings</a></li>
-              <li>
-                <hr class="dropdown-divider">
-              </li>
-              <li><a class="dropdown-item" href="#">Logout</a></li>
-            </ul>
-          </li>
-        </ul>
+
+        <!-- Profile Dropdown -->
+        <div class="d-flex">
+          <a class="nav-link me-2" href="#" id="profileDropdown" role="button" data-mdb-toggle="dropdown">
+            {{request.user}}
+          </a>
+          {% if request.user.is_authenticated %}
+          <a class="btn btn-danger btn-sm" href="/logout/">
+            logout
+          </a>
+          {% else %}
+          <a class="btn btn-dark btn-sm" href="/login/">
+            login
+          </a>
+          {% endif %}
+
+        </div>
       </div>
     </div>
   </nav>
   <!-- Navbar -->
 
   <!-- Main Section -->
-  <div class="container py-5">
-    <h2 class="mb-4 text-center">Welcome to Your Dashboard</h2>
+  <div class="container py-2">
 
-   
+
     <div class="row g-2">
 
 
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-             <a class="btn btn-primary btn-sm" href="/rate-logs/">See USD to BDT logs</a>
-            <a href="/api/subscriptions/" class="btn btn-info btn-sm">Show My Subscriptions</a>
-          </div>
-        </div>
-      </div>
-
-
-
-      <div class="col-md-6">
-        <div class="card h-100 shadow-sm">
+      <div class="col-md-12">
+        <div class="card shadow-sm">
           <div class="card-body">
             <h5 class="card-title">Check Exchange Rate</h5>
             <p class="card-text">Get the latest currency conversion rate.</p>
             <form id="exchange-rate-form" method="GET">
               <div class="row">
                 <div class="col">
-                  <input type="text" name="base" class="form-control" placeholder="Base (e.g., USD)" required>
+                  <select name="base" class="form-select" required>
+                    <option disabled selected value="">Base Currency</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="BDT">BDT - Bangladeshi Taka</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="GBP">GBP - British Pound</option>
+                    <option value="INR">INR - Indian Rupee</option>
+                    <option value="CAD">CAD - Canadian Dollar</option>
+                    <option value="AUD">AUD - Australian Dollar</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                    <option value="CNY">CNY - Chinese Yuan</option>
+                    <option value="NZD">NZD - New Zealand Dollar</option>
+                  </select>
                 </div>
+
                 <div class="col">
-                  <input type="text" name="target" class="form-control" placeholder="Target (e.g., BDT)" required>
+                  <select name="target" class="form-select" required>
+                    <option disabled selected value="">Target Currency</option>
+                    <option value="USD">USD - US Dollar</option>
+                    <option value="BDT">BDT - Bangladeshi Taka</option>
+                    <option value="EUR">EUR - Euro</option>
+                    <option value="GBP">GBP - British Pound</option>
+                    <option value="INR">INR - Indian Rupee</option>
+                    <option value="CAD">CAD - Canadian Dollar</option>
+                    <option value="AUD">AUD - Australian Dollar</option>
+                    <option value="JPY">JPY - Japanese Yen</option>
+                    <option value="CNY">CNY - Chinese Yuan</option>
+                    <option value="NZD">NZD - New Zealand Dollar</option>
+                  </select>
                 </div>
+
                 <div class="col-auto">
                   <button type="submit" class="btn btn-success">Get Rate</button>
                 </div>
               </div>
             </form>
             <div id="result" class="mt-4"></div>
+          </div>
+        </div>
+        <div class="card shadow-sm mt-1">
+          <div class="card-body">
+            <a class="btn btn-primary btn-sm" href="/rate-logs/">See USD to BDT logs</a>
+            <!-- <a href="/api/" class="btn btn-info btn-sm">API List</a> -->
+            <a href="/docs/" class="btn btn-info btn-sm">api docs</a>
+
+
+
           </div>
         </div>
       </div>

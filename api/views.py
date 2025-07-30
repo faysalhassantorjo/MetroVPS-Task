@@ -11,9 +11,10 @@ from rest_framework.views import APIView
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth.models import User
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.authentication import SessionAuthentication,BasicAuthentication
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from decouple import config
-
+from .models import *
 
 from .serializers import SubscriptionSerializer,PlanSerializer,SubscriptionCreateSerializer, SubscriptionCancelSerializer, UserSerializer
 
@@ -41,6 +42,24 @@ class RegisterUser(APIView):
             'access_token':str(refreshToken.access_token)
         })
 
+from django.urls import reverse
+@api_view(['GET'])
+def api_list(request):
+    return Response({
+        "exchange_rate": request.build_absolute_uri(reverse('get_exchange_rate')),
+        "subscribe": request.build_absolute_uri(reverse('subscribe')),
+        "subscriptions": request.build_absolute_uri(reverse('subscriptions')),
+        "cancel_subscription": request.build_absolute_uri(reverse('cancel_subscription')),
+        "register": request.build_absolute_uri(reverse('register')),
+    })
+
+@api_view(['GET'])
+def all_plans(request):
+    plans =Plan.objects.all()
+    serializer_obj = PlanSerializer(plans,many=True)
+    
+    return Response(serializer_obj.data) 
+    
 def fetch_data(base, target):
     key = config('API_KEY')
     url = f'https://v6.exchangerate-api.com/v6/{key}/latest/{base}'
@@ -89,7 +108,8 @@ def get_exchange_rate(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([JWTAuthentication])
+# @authentication_classes([JWTAuthentication])
+@authentication_classes([SessionAuthentication,BasicAuthentication])
 def subscribe(request):
     user = request.user
     
@@ -119,7 +139,8 @@ def subscribe(request):
 
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([JWTAuthentication])
+# @authentication_classes([JWTAuthentication])
+@authentication_classes([SessionAuthentication,BasicAuthentication])
 def subscriptions(request):
     user= request.user
     
@@ -130,7 +151,8 @@ def subscriptions(request):
     
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-@authentication_classes([JWTAuthentication])
+# @authentication_classes([JWTAuthentication])
+@authentication_classes([SessionAuthentication,BasicAuthentication])
 def cancel_subscription(request):
     serializer = SubscriptionCancelSerializer(data=request.data)
     if serializer.is_valid():
