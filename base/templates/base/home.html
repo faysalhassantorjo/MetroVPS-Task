@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>Dashboard - Subscription & Exchange</title>
+  <!-- MDB Bootstrap 5 CDN -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.min.css" rel="stylesheet">
+</head>
+
+<body class="bg-light">
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="#">MyDashboard</a>
+      <button class="navbar-toggler" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <!-- Profile Dropdown -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="profileDropdown" role="button" data-mdb-toggle="dropdown">
+              Profile
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="profileDropdown">
+              <li><a class="dropdown-item" href="#">View Profile</a></li>
+              <li><a class="dropdown-item" href="#">Settings</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <!-- Navbar -->
+
+  <!-- Main Section -->
+  <div class="container py-5">
+    <h2 class="mb-4 text-center">Welcome to Your Dashboard</h2>
+
+   
+    <div class="row g-2">
+
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+             <a class="btn btn-primary btn-sm" href="/rate-logs/">See USD to BDT logs</a>
+            <a href="/api/subscriptions/" class="btn btn-info btn-sm">Show My Subscriptions</a>
+          </div>
+        </div>
+      </div>
+
+
+
+      <div class="col-md-6">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <h5 class="card-title">Check Exchange Rate</h5>
+            <p class="card-text">Get the latest currency conversion rate.</p>
+            <form id="exchange-rate-form" method="GET">
+              <div class="row">
+                <div class="col">
+                  <input type="text" name="base" class="form-control" placeholder="Base (e.g., USD)" required>
+                </div>
+                <div class="col">
+                  <input type="text" name="target" class="form-control" placeholder="Target (e.g., BDT)" required>
+                </div>
+                <div class="col-auto">
+                  <button type="submit" class="btn btn-success">Get Rate</button>
+                </div>
+              </div>
+            </form>
+            <div id="result" class="mt-4"></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="container mt-1">
+    <h2 class="mb-4">User Subscriptions</h2>
+    <table class="table table-bordered table-hover table-striped">
+      <thead class="table-dark">
+        <tr>
+          <th>Username</th>
+          <th>Plan</th>
+          <th>Start Date</th>
+          <th>End Date</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for subscription in subscriptions %}
+        <tr>
+          <td>{{ subscription.user.username }}</td>
+          <td>{{ subscription.plan.name }}</td>
+          <td>{{ subscription.start_date|date:"Y-m-d H:i" }}</td>
+          <td>{{ subscription.end_date|date:"Y-m-d H:i" }}</td>
+          <td>
+            <span class="badge 
+                {% if subscription.status == 'active' %}bg-success
+                {% elif subscription.status == 'cancelled' %}bg-danger
+                {% elif subscription.status == 'expired' %}bg-secondary
+                {% else %}bg-light text-dark
+                {% endif %}
+            ">
+              {{ subscription.status|capfirst }}
+            </span>
+
+          </td>
+        </tr>
+        {% empty %}
+        <tr>
+          <td colspan="5" class="text-center">No subscriptions found.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+
+  <script>
+    const form = document.getElementById('exchange-rate-form');
+    const resultDiv = document.getElementById('result');
+
+    form.addEventListener('submit', async function (event) {
+      event.preventDefault();  // prevent default form submission (page reload)
+
+      const formData = new FormData(form);
+      const base = formData.get('base');
+      const target = formData.get('target');
+
+      // Build API URL with query parameters
+      const url = `http://127.0.0.1:8000/api/exchange-rate/?base=${encodeURIComponent(base)}&target=${encodeURIComponent(target)}`;
+
+      try {
+        // Send GET request to API
+        const response = await fetch(url);
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        // Assume API returns JSON like: { rate: 108.5 } or similar
+        const data = await response.json();
+
+        // Display the rate or whole response
+        if (data.rate) {
+          resultDiv.innerHTML = `<div class="alert alert-info">
+            Exchange Rate (${base} → ${target}): <strong>${data.rate}</strong> &nbsp; <spna>${data.fetched_at}</span>
+            </div>`;
+        } else {
+          resultDiv.innerHTML = `<div class="alert alert-warning">No rate data found in response.</div>`;
+        }
+      } catch (error) {
+        resultDiv.innerHTML = `<div class="alert alert-danger">Error: ${error.message}</div>`;
+      }
+    });
+  </script>
+
+  <!-- MDB JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/7.0.0/mdb.min.js"></script>
+</body>
+
+</html>
