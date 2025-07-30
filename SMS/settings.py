@@ -196,10 +196,10 @@ from celery.schedules import crontab
 CELERY_BEAT_SCHEDULE = {
     'fetch-usd-bdt-every-hour': {
         'task': 'base.tasks.fetch_usd_to_bdt', 
-        'schedule': crontab(hour="*/1"),     
+        'schedule': crontab(hour="*/1",),     
     },
     'update-subscriptions': {
         'task': 'base.tasks.update_subscriptions', 
-        'schedule': crontab(minute="*/2"),     
+        'schedule': crontab(minute=0, hour=0),     #everyday 12am
     },
 }
