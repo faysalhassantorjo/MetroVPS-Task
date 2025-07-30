@@ -83,6 +83,20 @@ DATABASES = {
     }
 }
 
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': config('MYSQL_DATABASE'),
+#         'USER': config('MYSQL_USER'),
+#         'PASSWORD': config('MYSQL_PASSWORD'),
+#         'HOST': 'mysql',
+#         'PORT': '3306',
+#     }
+# }
+
+
+
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
