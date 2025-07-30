@@ -1,7 +1,7 @@
 # MetroVPS-Task
 
 
-````markdown
+
 # 🚀 MetroVPS-Task
 
 A Django-based project for SMS subscription management, with full Docker support, Celery background tasks, and RESTful API.
@@ -17,7 +17,7 @@ A Django-based project for SMS subscription management, with full Docker support
 
 ---
 
-## 🛠️ Local Setup (with Docker)
+### 🛠️ Local Setup (with Docker)
 
 ### 1. Clone the repository
 
@@ -74,8 +74,6 @@ When you run `docker compose up`, the following services start automatically:
 * `celery-beat`: Periodic task scheduler
 * `redis`: Celery broker
 
-✅ Background and periodic tasks will run out of the box.
-
 ---
 
 ## 📮 API Endpoints
@@ -86,10 +84,6 @@ All API routes are under the `/api/` prefix.
 
 * `POST /api/register/`
   Register a new user
-
-* `POST /api/login/`
-  Login and receive auth token
-
 ---
 
 ### 💱 Exchange Rates
