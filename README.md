@@ -9,6 +9,7 @@
 - `celery`: Celery worker (background task processor)
 - `celery-beat`: Scheduler for periodic tasks
 - `redis`: Message broker for Celery
+- `sqlite`: Database (configured mysql but uesed sqlite)
 
 
 
